@@ -1,10 +1,16 @@
 import { type StaticImageData } from "next/image";
 
-export type Block = {
-  name: string;
-  color: string;
+export type StorageUnit = {
   borderColor?: string;
   x: number;
   y: number;
-  pokemonImage?: StaticImageData;
+  pokemon?: Pokemon;
 };
+
+export type Pokemon = {
+  sprite: StaticImageData;
+  name: string;
+};
+export enum PokemonDragEvents {
+  DRAG_START = "dragstart",
+}
