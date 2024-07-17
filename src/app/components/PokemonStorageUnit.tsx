@@ -1,6 +1,5 @@
 import React from "react";
 import { type Pokemon, PokemonDragEvents, type StorageUnit } from "../types";
-import BlurredBackgroundImage from "@/utils/BlurredBackgroundImage";
 import Image from "next/image";
 const PokemonStorageUnit = ({
   storageUnit,
@@ -10,16 +9,39 @@ const PokemonStorageUnit = ({
   updatePokemonStorageUnit: (updatedPokemonStorageUnit: StorageUnit) => void;
 }) => {
   function handleOnDrop(e: React.DragEvent) {
-    const pokemon: Pokemon = JSON.parse(
+    const dragData = JSON.parse(
       e.dataTransfer.getData(PokemonDragEvents.DRAG_START),
-    ) as Pokemon;
-    const updatedStorageUnit: StorageUnit = {
-      ...storageUnit,
-      pokemon: pokemon,
-      borderColor: "",
-    };
-    console.log({ updatedStorageUnit });
-    updatePokemonStorageUnit(updatedStorageUnit);
+    ) as object;
+    // x is unique to storageUnit
+    if ("x" in dragData && "y" in dragData) {
+      const draggedStorageUnit = dragData as StorageUnit;
+      const droppedStorageUnit = storageUnit;
+      // update dropped storage unit
+      updatePokemonStorageUnit({
+        ...droppedStorageUnit,
+        x: droppedStorageUnit.x,
+        y: droppedStorageUnit.y,
+        borderColor: "",
+        pokemon: draggedStorageUnit.pokemon,
+      });
+      // update dragged storage unit
+      updatePokemonStorageUnit({
+        ...draggedStorageUnit,
+        borderColor: "",
+        x: draggedStorageUnit.x,
+        y: draggedStorageUnit.y,
+        pokemon: droppedStorageUnit.pokemon,
+      });
+    } else {
+      const pokemon = dragData as Pokemon;
+      const updatedStorageUnit: StorageUnit = {
+        ...storageUnit,
+        pokemon: pokemon,
+        borderColor: "",
+      };
+      updatePokemonStorageUnit(updatedStorageUnit);
+      return;
+    }
   }
   function handleOnDragOver(e: React.DragEvent) {
     e.preventDefault();
@@ -31,25 +53,33 @@ const PokemonStorageUnit = ({
       pokemon: undefined,
     });
   }
+  const handleOnDragStart = (e: React.DragEvent) => {
+    console.log("drag Start: ", { storageUnit });
+    e.dataTransfer.setData(
+      PokemonDragEvents.DRAG_START,
+      JSON.stringify(storageUnit),
+    );
+  };
+
   function handleOnDragEnter() {
     updatePokemonStorageUnit({ ...storageUnit, borderColor: "red" });
   }
-
   function handleOnDragLeave() {
     updatePokemonStorageUnit({ ...storageUnit, borderColor: "" });
   }
   return (
     <button
-      className="relative flex size-24 flex-col items-center justify-center rounded-sm p-1 outline outline-white"
+      className="relative flex size-24 flex-col items-center justify-center rounded-lg border p-1"
       onDragEnter={handleOnDragEnter}
       onDragLeave={handleOnDragLeave}
       style={{ borderColor: storageUnit?.borderColor }}
       onClick={handleOnClick}
       onDrop={handleOnDrop}
       onDragOver={handleOnDragOver}
+      onDragStart={handleOnDragStart}
     >
       {storageUnit.pokemon?.sprite && (
-        <Image className="z-10" src={storageUnit.pokemon.sprite} alt={""} />
+        <Image src={storageUnit.pokemon.sprite} alt={""} />
       )}
     </button>
   );
