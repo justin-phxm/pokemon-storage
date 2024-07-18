@@ -4,10 +4,10 @@ export type StorageUnit = {
   borderColor?: string;
   x: number;
   y: number;
-  pokemon?: Pokemon;
+  pokemon?: CellElement;
 };
 
-export type Pokemon = {
+export type CellElement = {
   sprite: StaticImageData;
   name: string;
 };

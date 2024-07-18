@@ -1,6 +1,10 @@
 import React from "react";
-import { type Pokemon, PokemonDragEvents, type StorageUnit } from "../types";
-import Image from "next/image";
+import {
+  type CellElement,
+  PokemonDragEvents,
+  type StorageUnit,
+} from "@/app/types";
+import SpriteUnit from "./SpriteUnit";
 const PokemonStorageUnit = ({
   storageUnit,
   updatePokemonStorageUnit,
@@ -33,7 +37,7 @@ const PokemonStorageUnit = ({
         pokemon: droppedStorageUnit.pokemon,
       });
     } else {
-      const pokemon = dragData as Pokemon;
+      const pokemon = dragData as CellElement;
       const updatedStorageUnit: StorageUnit = {
         ...storageUnit,
         pokemon: pokemon,
@@ -79,7 +83,7 @@ const PokemonStorageUnit = ({
       onDragStart={handleOnDragStart}
     >
       {storageUnit.pokemon?.sprite && (
-        <Image src={storageUnit.pokemon.sprite} alt={""} />
+        <SpriteUnit cellUnit={storageUnit.pokemon} />
       )}
     </button>
   );

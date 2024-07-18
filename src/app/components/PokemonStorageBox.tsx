@@ -36,7 +36,7 @@ export default function PokemonStorageBox() {
   );
 
   return (
-    <div className="grid size-full grid-flow-row grid-cols-8 grid-rows-8 gap-4 p-24 outline">
+    <div className="grid size-full grid-flow-row grid-cols-8 grid-rows-8 gap-4 rounded p-8 outline">
       {storageBoxGrid.map((col, rowIndex) => (
         <React.Fragment key={rowIndex}>
           {col.map((storageUnit, colIndex) => (

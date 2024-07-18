@@ -2,6 +2,9 @@ import "@/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import ClientInjectables from "./components/ClientInjectables";
+import { ModalProvider } from "@/app/context/ModalContext";
+import Modal from "./components/Modal";
 
 export const metadata: Metadata = {
   title: "Pokemon Storage Box",
@@ -13,8 +16,16 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body>{children}</body>
-    </html>
+    <>
+      <html lang="en" className={`${GeistSans.variable}`}>
+        <body>
+          <ModalProvider>
+            <Modal />
+            {children}
+          </ModalProvider>
+        </body>
+      </html>
+      <ClientInjectables />
+    </>
   );
 }

@@ -1,8 +1,8 @@
 "use client";
-import Image from "next/image";
-import { PokemonDragEvents, type Pokemon } from "@/app/types";
+import { PokemonDragEvents, type CellElement } from "@/app/types";
 import BlurredBackgroundImage from "@/utils/BlurredBackgroundImage";
-export default function Party({ pokemon }: { pokemon: Pokemon }) {
+import SpriteUnit from "./SpriteUnit";
+export default function Party({ pokemon }: { pokemon: CellElement }) {
   const handleOnDragStart = (e: React.DragEvent) => {
     e.dataTransfer.setData(
       PokemonDragEvents.DRAG_START,
@@ -17,12 +17,7 @@ export default function Party({ pokemon }: { pokemon: Pokemon }) {
       className="relative flex size-32 flex-col items-center justify-center"
     >
       <BlurredBackgroundImage image={pokemon.sprite} />
-      <Image
-        className="z-10 max-h-14 w-auto object-contain"
-        src={pokemon.sprite}
-        alt={pokemon.name}
-        quality={50}
-      />
+      <SpriteUnit cellUnit={pokemon} />
       <div className="z-10 capitalize">{pokemon.name}</div>
     </button>
   );
