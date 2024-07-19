@@ -30,6 +30,7 @@ export default function BlurredBackgroundImage({
   return (
     <Image
       src={blurredImage}
+      draggable={false}
       className="absolute rounded-xl object-cover opacity-50"
       alt=""
       fill={true}

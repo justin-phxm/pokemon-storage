@@ -6,11 +6,19 @@ export default function HomePage() {
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="flex flex-col items-center justify-center gap-6 py-8">
         <h1 className="text-4xl font-bold">PokeDungeon</h1>
-        <PokemonStorageBox />
-        <div className="mt-1 grid grid-cols-6 gap-4">
-          {pokemons.map((pokemon, index) => {
-            return <Party pokemon={pokemon} key={index} />;
-          })}
+        <h2 className="text-xl font-semibold">
+          Drag a Pokemon from your party to your box!
+        </h2>
+        <h2 className="text-xl font-semibold">
+          Right click Pokemon to view their pokedex entry!
+        </h2>
+        <div className="flex gap-20">
+          <div className="grid grid-rows-6">
+            {pokemons.map((pokemon, index) => {
+              return <Party pokemon={pokemon} key={index} />;
+            })}
+          </div>
+          <PokemonStorageBox />
         </div>
       </div>
     </main>

@@ -12,9 +12,8 @@ export default function Party({ pokemon }: { pokemon: CellElement }) {
 
   return (
     <button
-      draggable
       onDragStart={handleOnDragStart}
-      className="relative flex size-32 flex-col items-center justify-center"
+      className="relative flex size-32 cursor-auto flex-col items-center justify-center"
     >
       <BlurredBackgroundImage image={pokemon.sprite} />
       <SpriteUnit cellUnit={pokemon} />
