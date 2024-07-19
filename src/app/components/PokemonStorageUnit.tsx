@@ -58,7 +58,6 @@ const PokemonStorageUnit = ({
     });
   }
   const handleOnDragStart = (e: React.DragEvent) => {
-    console.log("drag Start: ", { storageUnit });
     e.dataTransfer.setData(
       PokemonDragEvents.DRAG_START,
       JSON.stringify(storageUnit),

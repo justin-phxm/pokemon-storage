@@ -3,7 +3,6 @@ import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import ClientInjectables from "./components/ClientInjectables";
-import Modal from "./components/Modal";
 import { Providers } from "@/app/providers/Providers";
 
 export const metadata: Metadata = {
@@ -19,10 +18,7 @@ export default function RootLayout({
     <>
       <html lang="en" className={`${GeistSans.variable}`}>
         <body>
-          <Providers>
-            <Modal />
-            {children}
-          </Providers>
+          <Providers>{children}</Providers>
         </body>
       </html>
       <ClientInjectables />
