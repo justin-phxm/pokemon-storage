@@ -3,8 +3,8 @@ import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import ClientInjectables from "./components/ClientInjectables";
-import { ModalProvider } from "@/app/context/ModalContext";
 import Modal from "./components/Modal";
+import { Providers } from "@/app/providers/Providers";
 
 export const metadata: Metadata = {
   title: "Pokemon Storage Box",
@@ -19,10 +19,10 @@ export default function RootLayout({
     <>
       <html lang="en" className={`${GeistSans.variable}`}>
         <body>
-          <ModalProvider>
+          <Providers>
             <Modal />
             {children}
-          </ModalProvider>
+          </Providers>
         </body>
       </html>
       <ClientInjectables />

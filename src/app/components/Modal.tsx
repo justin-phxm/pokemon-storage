@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { twMerge } from "tailwind-merge";
-import { useModal } from "../context/ModalContext";
+import { useModal } from "@/app/providers/ModalContext";
 export default function Modal({
   children,
   className,
