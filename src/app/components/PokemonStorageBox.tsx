@@ -1,24 +1,32 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { type StorageUnit } from "@/app/types";
 import PokemonStorageUnit from "./PokemonStorageUnit";
 import React from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 
-export default function PokemonStorageBox() {
+export default function PokemonStorageBox({
+  boxNumber,
+  resetClearSignal,
+  clearSignal,
+}: {
+  boxNumber: number;
+  resetClearSignal: () => void;
+  clearSignal: number | null;
+}) {
   const GRID_SIZE = 8;
   const defaultGrid = Array.from({ length: GRID_SIZE }, (_, row) =>
-    Array.from({ length: GRID_SIZE }, (_, col) => ({
-      x: row,
-      y: col,
-    })),
+    Array.from({ length: GRID_SIZE }, (_, col) => ({ x: row, y: col })),
   );
-  const handleButtonClick = () => {
-    setStorageBoxGrid(defaultGrid);
-  };
+  useEffect(() => {
+    if (clearSignal === boxNumber) {
+      setStorageBoxGrid(defaultGrid);
+      resetClearSignal();
+    } //eslint-disable-next-line
+  }, [boxNumber, clearSignal, resetClearSignal]);
   const [storageBoxGrid, setStorageBoxGrid] = useLocalStorage(
-    "box1",
+    `pokemonStorageBox${boxNumber}`,
     defaultGrid,
   );
   const updatePokemonStorageUnit = useCallback(
@@ -41,27 +49,18 @@ export default function PokemonStorageBox() {
   );
 
   return (
-    <>
-      <button
-        onClick={handleButtonClick}
-        className="absolute right-0 top-0 rounded-xl bg-slate-500/50 p-4 px-8 text-xl font-semibold"
-      >
-        Clear
-      </button>
-
-      <div className="grid size-full grid-flow-row grid-cols-8 grid-rows-8 gap-4 rounded p-8 outline">
-        {storageBoxGrid.map((col, rowIndex) => (
-          <React.Fragment key={rowIndex}>
-            {col.map((storageUnit, colIndex) => (
-              <PokemonStorageUnit
-                storageUnit={storageUnit}
-                key={`${rowIndex}-${colIndex}`}
-                updatePokemonStorageUnit={updatePokemonStorageUnit}
-              />
-            ))}
-          </React.Fragment>
-        ))}
-      </div>
-    </>
+    <div className="grid size-full grid-flow-row grid-cols-8 grid-rows-8 gap-4 rounded p-8 outline">
+      {storageBoxGrid.map((col, rowIndex) => (
+        <React.Fragment key={rowIndex}>
+          {col.map((storageUnit, colIndex) => (
+            <PokemonStorageUnit
+              storageUnit={storageUnit}
+              key={`${rowIndex}-${colIndex}`}
+              updatePokemonStorageUnit={updatePokemonStorageUnit}
+            />
+          ))}
+        </React.Fragment>
+      ))}
+    </div>
   );
 }
