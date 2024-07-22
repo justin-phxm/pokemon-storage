@@ -1,16 +1,22 @@
 "use server";
-import { type Pokemon, PokemonClient } from "pokenode-ts";
-
+import { type Pokemon as PokemonType, PokemonClient } from "pokenode-ts";
+type Pokemon = PokemonType & {
+  sprites: {
+    other: {
+      showdown: {
+        front_default: string;
+      };
+    };
+  };
+};
 export const getPokemon = async (
   pokemonName = "luxray",
 ): Promise<Pokemon | undefined> => {
   const api = new PokemonClient();
-  let pokemon: Pokemon | undefined;
   try {
-    pokemon = await api.getPokemonByName(pokemonName);
+    const parsedPokemonName = pokemonName.toLowerCase();
+    return (await api.getPokemonByName(parsedPokemonName)) as Pokemon;
   } catch (e) {
     console.error(e);
   }
-
-  return pokemon;
 };

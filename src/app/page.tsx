@@ -1,6 +1,7 @@
 import { pokemons } from "@/pokemons";
 import Party from "@/components/Party";
 import PokemonStorageContainer from "@/components/PokemonStorageContainer";
+import SearchPokemon from "./components/SearchPokemon";
 export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
@@ -13,6 +14,7 @@ export default function HomePage() {
           Right click Pokemon to view their pokedex entry!
         </h2>
         <div className="flex gap-20">
+          <SearchPokemon />
           <div className="grid grid-rows-6">
             {pokemons.map((pokemon, index) => {
               return <Party pokemon={pokemon} key={index} />;
