@@ -15,7 +15,9 @@ export default function Party({ pokemon }: { pokemon: CellElement }) {
       onDragStart={handleOnDragStart}
       className="relative flex size-32 cursor-auto flex-col items-center justify-center"
     >
-      <BlurredBackgroundImage image={pokemon.sprite} />
+      {typeof pokemon.sprite !== "string" && (
+        <BlurredBackgroundImage image={pokemon.sprite} />
+      )}
       <SpriteUnit cellUnit={pokemon} />
       <div className="z-10 capitalize">{pokemon.name}</div>
     </button>

@@ -8,11 +8,17 @@ import SpriteUnit from "./SpriteUnit";
 const PokemonStorageUnit = ({
   storageUnit,
   updatePokemonStorageUnit,
+  swapPokemonStorageUnit,
 }: {
   storageUnit: StorageUnit;
   updatePokemonStorageUnit: (updatedPokemonStorageUnit: StorageUnit) => void;
+  swapPokemonStorageUnit: (
+    updatedPokemonStorageUnit: StorageUnit,
+    draggedStorageUnit: StorageUnit,
+  ) => void;
 }) => {
   function handleOnDrop(e: React.DragEvent) {
+    e.preventDefault();
     const dragData = JSON.parse(
       e.dataTransfer.getData(PokemonDragEvents.DRAG_START),
     ) as object;
@@ -21,39 +27,34 @@ const PokemonStorageUnit = ({
       const draggedStorageUnit = dragData as StorageUnit;
       const droppedStorageUnit = storageUnit;
       // update dropped storage unit
-      updatePokemonStorageUnit({
-        ...droppedStorageUnit,
+      const newDroppedStorageUnit: StorageUnit = {
+        ...draggedStorageUnit,
         x: droppedStorageUnit.x,
         y: droppedStorageUnit.y,
-        borderColor: "",
-        pokemon: draggedStorageUnit.pokemon,
-      });
+      };
       // update dragged storage unit
-      updatePokemonStorageUnit({
-        ...draggedStorageUnit,
-        borderColor: "",
+      const newDraggedStorageUnit: StorageUnit = {
+        ...droppedStorageUnit,
         x: draggedStorageUnit.x,
         y: draggedStorageUnit.y,
-        pokemon: droppedStorageUnit.pokemon,
-      });
+      };
+      swapPokemonStorageUnit(newDroppedStorageUnit, newDraggedStorageUnit);
     } else {
+      // pokemon not from storage unit
       const pokemon = dragData as CellElement;
       const updatedStorageUnit: StorageUnit = {
         ...storageUnit,
         pokemon: pokemon,
-        borderColor: "",
+        borderColor: undefined,
       };
       updatePokemonStorageUnit(updatedStorageUnit);
       return;
     }
   }
-  function handleOnDragOver(e: React.DragEvent) {
-    e.preventDefault();
-  }
   function handleOnClick() {
     updatePokemonStorageUnit({
       ...storageUnit,
-      borderColor: "",
+      borderColor: undefined,
       pokemon: undefined,
     });
   }
@@ -64,26 +65,17 @@ const PokemonStorageUnit = ({
     );
   };
 
-  function handleOnDragEnter() {
-    updatePokemonStorageUnit({ ...storageUnit, borderColor: "red" });
-  }
-  function handleOnDragLeave() {
-    updatePokemonStorageUnit({ ...storageUnit, borderColor: "" });
-  }
   return (
     <button
-      className="relative flex size-24 flex-col items-center justify-center rounded-lg border p-1"
-      onDragEnter={handleOnDragEnter}
-      onDragLeave={handleOnDragLeave}
-      style={{ borderColor: storageUnit?.borderColor }}
+      className="relative flex size-24 flex-col items-center justify-center rounded-lg border p-1 hover:border-red-500"
       onClick={handleOnClick}
       onDrop={handleOnDrop}
-      onDragOver={handleOnDragOver}
       onDragStart={handleOnDragStart}
     >
       {storageUnit.pokemon?.sprite && (
         <SpriteUnit cellUnit={storageUnit.pokemon} />
       )}
+      {storageUnit.x}, {storageUnit.y}
     </button>
   );
 };

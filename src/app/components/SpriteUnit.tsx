@@ -76,6 +76,9 @@ export default function SpriteUnit({ cellUnit }: { cellUnit: CellElement }) {
         src={cellUnit.sprite}
         alt={cellUnit.name}
         draggable={true}
+        unoptimized
+        width={50}
+        height={50}
       />
     </>
   );

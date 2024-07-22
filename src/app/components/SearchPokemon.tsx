@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import usePokemon from "../hooks/usePokemon";
 import { Button } from "@mui/material";
-import Image from "next/image";
+import Party from "./Party";
 
 export default function SearchPokemon() {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -26,13 +26,11 @@ export default function SearchPokemon() {
         </Button>
       </div>
       {data && (
-        <Image
-          unoptimized
-          alt={pokemonName}
-          src={data.sprites.other.showdown.front_default}
-          width={50}
-          height={50}
-          className="h-auto"
+        <Party
+          pokemon={{
+            sprite: data.sprites.other.showdown.front_default,
+            name: data.name,
+          }}
         />
       )}
     </form>

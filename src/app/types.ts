@@ -8,7 +8,7 @@ export type StorageUnit = {
 };
 
 export type CellElement = {
-  sprite: StaticImageData;
+  sprite: StaticImageData | string;
   name: string;
 };
 export enum PokemonDragEvents {

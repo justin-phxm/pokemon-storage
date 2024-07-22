@@ -25,6 +25,7 @@ export default function PokemonStorageContainer() {
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
         }}
+        allowTouchMove={false}
         spaceBetween={50}
         slidesPerView={1}
         style={{ padding: "1rem" }}
