@@ -75,7 +75,6 @@ const PokemonStorageUnit = ({
       {storageUnit.pokemon?.sprite && (
         <SpriteUnit cellUnit={storageUnit.pokemon} />
       )}
-      {storageUnit.x}, {storageUnit.y}
     </button>
   );
 };

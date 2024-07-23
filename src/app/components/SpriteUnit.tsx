@@ -8,8 +8,13 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Table,
+  TableCell,
+  TableRow,
 } from "@mui/material";
 import NextImage from "next/image";
+import TypeBadge from "./TypeBadge";
+import Link from "next/link";
 export default function SpriteUnit({ cellUnit }: { cellUnit: CellElement }) {
   const [fetchPokemon, setFetchPokemon] = useState(false);
   const { data: pokemon } = usePokemon(cellUnit.name, fetchPokemon);
@@ -49,7 +54,6 @@ export default function SpriteUnit({ cellUnit }: { cellUnit: CellElement }) {
     if (!dragImageSrc.current) return;
     ev.dataTransfer.setDragImage(dragImageSrc.current, 50, 50);
   };
-
   return (
     <>
       {pokemon && (
@@ -58,12 +62,45 @@ export default function SpriteUnit({ cellUnit }: { cellUnit: CellElement }) {
           open={open}
           onClose={handleClose}
         >
-          <DialogTitle className="text-2xl font-semibold capitalize">
-            {pokemon?.name}
+          <DialogTitle className="flex items-center justify-between gap-4 text-2xl font-semibold capitalize">
+            <Link
+              href={`https://bulbapedia.bulbagarden.net/wiki/${pokemon.name}`}
+              target="_blank"
+              className="hover:opacity-80"
+            >
+              {pokemon.name}
+            </Link>
+            <audio controls autoPlay controlsList="nodownload noplaybackrate">
+              <source src={pokemon.cries.latest} type="audio/ogg" />
+            </audio>
+            <div className="flex gap-4">
+              {pokemon.types.map((type) => (
+                <TypeBadge key={type.type.name} type={type.type.name} />
+              ))}
+            </div>
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              {JSON.stringify(pokemon?.stats)}
+              <Table>
+                {pokemon.stats.map((stat) => (
+                  <TableRow key={stat.stat.name}>
+                    <TableCell className="text-xl font-semibold capitalize">
+                      {stat.stat.name}:
+                    </TableCell>
+                    <TableCell>
+                      <meter
+                        min={0}
+                        max={255}
+                        low={255 / 3}
+                        high={(255 / 3) * 2}
+                        optimum={255 / 2}
+                        value={stat.base_stat}
+                      />
+                    </TableCell>
+                    <TableCell className="text-xl">{stat.base_stat}</TableCell>
+                  </TableRow>
+                ))}
+              </Table>
             </DialogContentText>
           </DialogContent>
         </Dialog>

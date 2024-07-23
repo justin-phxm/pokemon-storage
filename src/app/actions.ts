@@ -8,6 +8,10 @@ type Pokemon = PokemonType & {
       };
     };
   };
+  cries: {
+    latest: string;
+    legacy: string;
+  };
 };
 export const getPokemon = async (
   pokemonName = "luxray",
